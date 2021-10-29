@@ -1,0 +1,88 @@
+You can start downloading the docker image in case you do not have it already:
+docker pull ccarrero71/sf:Fraud-Detection-Lab-GSI
+I am a python developer .. can we use python ML code with snowpark ?
+Right now we support Scala and Python will be available later this year
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes ccarrero71/sf:Fraud-Detection-Lab-GSI
+Above is the docker run command.
+
+If you have a local Jupyter running already at port 8888, you can just change the port mapping to 9999 for example
+docker run --rm -p 9999:8888 -e JUPYTER_ENABLE_LAB=yes ccarrero71/sf:Fraud-Detection-Lab-GSI
+This would map port 9999 to the Jupiter ran in the docker image
+So to retrieve the docker, Do a docker ps
+
+Find out the name of the container (NAMES) column
+Then run: docker logs <container-name>
+
+getting an error while connecting to snowflake
+If you want to setup your own environment to run Snowpark Scala, there are multiple options from Visual Studio to IntelliK to SBT and Jupyter. All documented here: https://docs.snowflake.com/en/developer-guide/snowpark/quickstart-jupyter.html#setting-up-a-jupyter-notebook-for-scala-development
+
+Make sure you don’t have a forward slash at the end of the URL in your properties
+
+Hi.In my case, some dependencies failedDownloaded https://repo.osgeo.org/repository/release/com/snowflake/snowpark/0.8.0/snowpark-0.8.0.pom.sha1Failed to resolve ivy dependencies:Error downloading com.snowflake:snowpark:0.8.0not found: /home/jovyan/.ivy2/local/com.snowflake/snowpark/0.8.0/ivys/ivy.xml
+
+Invalid connection string for me - in step 7
+
+step 4 in fact
+
+I removed the /
+
+checked twice ...
+URL = https://xy12345.snowflakecomputing.com
+do I need quotes for the password ?
+
+got it … login was case sensitive
+
+Use the callBuiltin function to call the system-defined function.Use the builtin function to create a function object that you can use to call the system-defined function.
+
+From - https://docs.snowflake.com/en/developer-guide/snowpark/calling-functions.html
+
+Window allows to use snowflake sqls on DataFrame ?
+
+Snowpark translates all dataframe constructs to SQL. Window functions are one of the Dataframe constructs that get translated to Window functions in SQL.
+So all this runs on snowflake compute ? Can we select instance types for these computes, getting bigger machines for compute to speed up
+
+Yes, it’s pushed down as a SQL which runs on a virtual warehouse that you set-up in your session in your properties.txt file
+
+And you can scale-up or scale down your warehouse
+
+So how I use warehouse to query , now I am using warehouse to run these transformations or Scala code. So depending on my ML need I can size up my warehouse. Also actions and transformations of Scala (lazy eval) are valid here too . That is I print in between(do an action ) I break the DAG.
+
+its very similar to DAG in Spark. Except that you don’t need the cluster running even while defining the transformations. The cluster is used only when an execution command is called.
+
+We are connecting Snowflake in Jupiter notebook right? not Python in Snowflake? Pls clarify
+
+So for executing ML models in python, data is moving out of snowflake ?
+
+We are connecting to Snowflake through a Scala Almond kernel in Jupiter using the Snowpark driver
+
+Model training happens outside of Snowflake yes
+
+He is using his docker compute to train the model
+
+can we do all these ML operation in snowflake directly instead in python client ? like training and testing ...
+
+The entire data prep was done using Snowpark API pushed down in Snowflake
+It’s on the roadmap with the Snowpark for Python API
+That would really make it that data does not leave snowflake
+Does it support only pmml or any other model saving formats like pickle
+Not only restricted to pummel, you can use any other format as long as it can be packaged as a jar
+“pmml”
+
+
+So predictFraudUDF is a function to predict and it runs on snowflake
+Yes, so inference is 100% running in Snowflake within a Java UDF
+yes. It is an inference function that uses the model.
+Hi I was trying to read the transcripts from beginning, since I was facing some issues in laptop. Can anyone pls share the links to connect to lab
+Since we train outside snowflake , we need to train periodically, we can overwrite this function with the new pmml files
+Yes, we can
+https://docs.snowflake.com/en/sql-reference/sql/show-functions.html#show-functions
+
+SHOW FUNCTIONS will list the UDF
+will this show the jar files (model objects)
+Create versions of model instead of overwriting the UDF for better traceability
+helps to know the model objects loaded in snowflake
+can I get the link for pdf
+Hi Ajay, the deck will be sent out. The whole lab can be downloaded with Docker using the below commands.
+docker pull ccarrero71/sf:Fraud-Detection-Lab-GSI
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes ccarrero71/sf:Fraud-Detection-Lab-GSI
+
